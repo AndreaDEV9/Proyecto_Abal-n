@@ -1,7 +1,11 @@
 [project]
 name = "abalon"
 version = "0.1.0"
-description = "Add your description here"
+description = "Primera entrega del proyecto Modular"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "dotenv>=0.9.9",
+    "streamlit>=1.52.1",
+    "supabase>=2.26.0",
+]

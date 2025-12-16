@@ -1,6 +1,4 @@
-def main():
-    print("Hello from abalon!")
-
+from capaPresentacion.pInterfaz import Interfaz
 
 if __name__ == "__main__":
-    main()
+    objetoPrueba = Interfaz()
