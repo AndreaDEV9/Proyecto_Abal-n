@@ -13,30 +13,97 @@ class Interfaz:
 
         # ---------------- Menú horizontal ----------------
         st.subheader("Menú de platos")
+        
 
-        platos = [
-            {"nombre": "Ceviche", "precio": 16.0, "imagen": "images/ceviche.jpg"},
-            {"nombre": "Leche de Tigre", "precio": 15.0, "imagen": "images/lechetigre.jpg"},
-            {"nombre": "Chilcano", "precio": 10.0, "imagen": "images/chilcano.jpg"}
-        ]
+        categorias = {
+            "Ceviches": [
+                {"nombre": "Ceviche Clásico", "precio": 16.0, "imagen": "images/ceviche.jpg"},
+                {"nombre": "Ceviche Mixto", "precio": 18.0, "imagen": "images/ceviche_mixto.jpg"},
+                {"nombre": "Ceviche de Pota", "precio": 14.0, "imagen": "images/ceviche_pota.jpg"}
+            ],
+            "Arroces": [
+                {"nombre": "Arroz con Mariscos", "precio": 18.0, "imagen": "images/arroz_mariscos.jpg"},
+                {"nombre": "Arroz de pescado", "precio": 14.0, "imagen": "images/chaufa_de_pescado.jpg"},
+                {"nombre": "Chaufa mixto", "precio": 12.0, "imagen": "images/chaufa_mixto.jpg"}
+            ],
+            "Sopas": [                   
+                {"nombre": "Chilcano", "precio": 20.0, "imagen": "images/chilcano.jpg"},
+                {"nombre": "Chilcano Especial", "precio": 22.0, "imagen": "images/chilcano_especial.jpg"},
+                {"nombre": "Sudado de Chita", "precio": 10.0, "imagen": "images/sudado_chita.jpg"}
+            ],
+            "Chicharrones": [
+                {"nombre": "Chicharrón de Pescado", "precio": 15.0, "imagen": "images/chicharron_pescado.jpg"},
+                {"nombre": "Chicharrón Mixto", "precio": 18.0, "imagen": "images/chicharron_mixto.jpg"},
+                {"nombre": "Chicharrón de Pota", "precio": 17.0, "imagen": "images/chicharron_pota.jpg"}
+            ],
+            "Tortillas": [
+                {"nombre": "Tortilla de Pescado", "precio": 14.0, "imagen": "images/tortilla_pescado.jpg"},
+                {"nombre": "Tortilla de Mixto", "precio": 10.0, "imagen": "images/tortilla_mixto.jpg"},
+                {"nombre": "Tortilla de Mariscos", "precio": 12.0, "imagen": "images/tortilla_mariscos.jpg"}
+            ],
+            "Especialidad de la Casa": [
+                {"nombre": "Jalea Mixta", "precio": 25.0, "imagen": "images/jalea_mixta.jpg"},
+                {"nombre": "Jalea de Pescado", "precio": 30.0, "imagen": "images/jalea_de_pescado.jpg"},
+                {"nombre": "Cojinova Frita", "precio": 28.0, "imagen": "images/cojinova_frita.jpg"}
+            ],
+            "Fuentes": [
+                {"nombre": "Chicharron de Pescado - 4 personas", "precio": 26.0, "imagen": "images/fuente_chicharron_pescado.jpg"},
+                {"nombre": "Ceviche - 4 personas", "precio": 24.0, "imagen": "images/fuente_ceviche.jpg"},
+                {"nombre": "Chicharron de Pota - 4 personas", "precio": 32.0, "imagen": "images/fuente_chicharron_pota.jpg"}
+            ],
+            "Bebidas": [
+                {"nombre": "Chicha Morada", "precio": 5.0, "imagen": "images/chicha.jpg"},
+                {"nombre": "Cerveza Pilsen", "precio": 5.0, "imagen": "images/cerveza.jpg"},
+                {"nombre": "Gaseosa Personal 'Coca-Cola'", "precio": 4.0, "imagen": "images/gaseosa_cocacola.jpg"}
+            ],
+            "Guarniciones": [
+                {"nombre": "Arroz Blanco", "precio": 4.0, "imagen": "images/arroz_blanco.jpg"},
+                {"nombre": "Yuca Frita", "precio": 4.0, "imagen": "images/yuca.jpg"},
+                {"nombre": "Papa Dorada", "precio": 4.0, "imagen": "images/papa.jpg"}
+            ]
+        } 
 
+
+
+        tabs = st.tabs(list(categorias.keys()))
 
         # Diccionario para almacenar selección y cantidades
         pedido = {}
 
-        # Mostrar platos horizontalmente
-        cols = st.columns(len(platos))
-        for idx, plato in enumerate(platos):
-            with cols[idx]:
-                st.image(plato["imagen"], width=150)
-                st.write(f"**{plato['nombre']}**")
-                st.write(f"S/. {plato['precio']}")
-                seleccionar = st.checkbox("Seleccionar", key=plato["nombre"])
-                if seleccionar:
-                    cantidad = st.number_input("Cantidad", min_value=1, value=1, key=plato["nombre"]+"_cant")
-                    pedido[plato["nombre"]] = {"precio": plato["precio"], "cantidad": cantidad}
 
-        st.markdown("---")
+        # ---------------- Barra de navegación rápida --------------
+
+
+
+        for tab, categoria in zip(tabs, categorias.keys()):
+            with tab:
+                cols = st.columns(3)
+
+                for i, plato in enumerate(categorias[categoria]):
+                    with cols[i]:
+                        st.image(plato["imagen"], width=150)
+                        st.write(f"**{plato['nombre']}**")
+                        st.write(f"S/. {plato['precio']}")
+
+                        seleccionar = st.checkbox(
+                            "Seleccionar",
+                            key=f"{categoria}_{plato['nombre']}"
+                        )
+
+                        if seleccionar:
+                            cantidad = st.number_input(
+                                "Cantidad",
+                                min_value=1,
+                                value=1,
+                                key=f"{categoria}_{plato['nombre']}_cant"
+                            )
+
+                            pedido[plato["nombre"]] = {
+                                "precio": plato["precio"],
+                                "cantidad": cantidad
+                            }
+
+
 
         # ---------------- Información del cliente y resumen ----------------
         col1, col2 = st.columns(2)
